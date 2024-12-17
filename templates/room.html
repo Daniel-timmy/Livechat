@@ -1,45 +1,61 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="message-box">
-    <h2>Chat Room: {{code}}</h2>
-    <div class="messages" id="messages"></div>
-    <div class="inputs">
-        <input type="text" rows="3" placeholder="Message" name="message" id="message"/>
-        <button type="button" name="send" id="send-btn" onClick="sendMessage()">
-            Send
-        </button>
-    </div>
+{% extends 'base.html' %} {% block content %}
+<div class="message-box" style="margin-top: 15px">
+  <h2>Chat Room: {{code}}</h2>
+  <div class="messages" id="messages"></div>
+  <div class="inputs">
+    <input
+      type="text"
+      rows="3"
+      placeholder="Message"
+      name="message"
+      id="message"
+    />
+    <input type="file" id="attachment" name="attachment" accept="image/*" />
+    <button
+      type="button"
+      name="send"
+      id="send-btn"
+      class="btn btn-dark"
+      onClick="sendMessage()"
+    >
+      Send
+    </button>
+  </div>
 </div>
+{% if error %}
+<ul>
+  <li>{{error}}</li>
+</ul>
+{% endif %}
 <script type="text/javascript">
-    let socketio = io();
-    const messages = document.getElementById("messages")
-    const createMessage = (name, msg, date) => {
-        const content =`
-        <div class='text'>
-            <span>${name}</strong>: ${msg}
-            </span>
-            <span class='muted'>
-                ${date}
-            </span>
-        </div>
+  let socketio = io();
+  const messages = document.getElementById("messages");
+  const createMessage = (name, msg, date) => {
+    const content = `
+       <div class="card">
+      <div class="card-body">${msg}</div>
+      <p class="card-text"><small class="text-muted">${sender.first_name}</strong>: ${date}</small></p>
+    </div>
         `;
-        messages.innerHTML += content
-    }
-    socketio.on('message', (data) => {
-        createMessage(data.name, data.message, data.date)
-    })
-    const sendMessage = () => {
-        const message = document.getElementById("message")
-        if (message.value == "") return;
-        socketio.emit('message', {data: message.value})
-        message.value = ""
 
-    }
+    messages.innerHTML += content;
+  };
+  socketio.on("message", (data) => {
+    createMessage(data.name, data.message, data.date);
+  });
+  const sendMessage = () => {
+    const message = document.getElementById("message");
+    const attachment = document.getElementById("attachment");
+    if (message.value == "") return;
+    socketio.emit("message", {
+      data: message.value,
+      attachment: attachment.value,
+    });
+    message.value = "";
+  };
 </script>
 {% for msg in messages %}
 <script type="text/javascript">
-    createMessage('{{msg.name}}', '{{msg.message}}', '{{msg.date}}')
+  createMessage("{{msg.name}}", "{{msg.message}}", "{{msg.date}}");
 </script>
-{% endfor %}
-{% endblock %}
-
+{% endfor %} {% endblock %}

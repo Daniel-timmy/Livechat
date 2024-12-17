@@ -1,3 +1,38 @@
-{% extend 'base.html' %}
+{% extends 'base.html' %}
+{% block content %}
 
+<form method="post" class="buttons">
+    <h3>Welcome back.</h3>
+  <div class="form-group">
+    <label for="emailInput">Email address</label>
+    <input type="email" class="form-control" id='emailInput' name="email" placeholder="Enter email" value="{{email}}">
+  </div>
+  <div class="form-group">
+    <label for="ePassword1">Password</label>
+    <input type="password" class="form-control" id="ePassword1" placeholder="Password" name="password" value="{{password}}">
+  </div>
+  <button type="submit" class="btn btn-primary">Login</button>
+    {% if error %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endif %}
+</form>
 {% endblock %}
+<!--<form method="post" class="buttons">-->
+<!--    <h3>Login</h3>-->
+<!--    <div>-->
+<!--        <label>Email:</label>-->
+<!--        <input type="email" placeholder="" name="email" value="{{email}}"/>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <label>Password:</label>-->
+<!--        <input type="password" placeholder="Password" name="password" value="{{password}}"/>-->
+<!--    </div>-->
+<!--    <button type="submit" name="signup" class="create-btn">Sign Up</button>-->
+<!--    {% if error %}-->
+<!--    <ul>-->
+<!--        <li>{{error}}</li>-->
+<!--    </ul>-->
+<!--    {% endif %}-->
+<!--</form>-->

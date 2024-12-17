@@ -63,3 +63,7 @@ h2 {
     font-size: 10px;
     color: darkgrey;
 }
+.stacked-div {
+    display: block;
+    margin-bottom: 20px; /* Optional: Adds space between the divs */
+}
